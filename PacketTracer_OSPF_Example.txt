@@ -1,0 +1,65 @@
+
+📌 Packet Tracer OSPF Example (3 Routers)
+
+Topology:
+R1 ---- R2 ---- R3
+
+Networks:
+- R1 LAN: 192.168.1.0/24
+- R1-R2 Link: 10.0.0.0/30
+- R2-R3 Link: 10.0.0.4/30
+- R3 LAN: 192.168.2.0/24
+
+-----------------------------------------------------
+🔹 Router 1 (R1)
+enable
+configure terminal
+interface fa0/0
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+exit
+interface s0/0/0
+ ip address 10.0.0.1 255.255.255.252
+ no shutdown
+exit
+router ospf 1
+ network 192.168.1.0 0.0.0.255 area 0
+ network 10.0.0.0 0.0.0.3 area 0
+
+-----------------------------------------------------
+🔹 Router 2 (R2)
+enable
+configure terminal
+interface s0/0/0
+ ip address 10.0.0.2 255.255.255.252
+ no shutdown
+exit
+interface s0/0/1
+ ip address 10.0.0.5 255.255.255.252
+ no shutdown
+exit
+router ospf 1
+ network 10.0.0.0 0.0.0.3 area 0
+ network 10.0.0.4 0.0.0.3 area 0
+
+-----------------------------------------------------
+🔹 Router 3 (R3)
+enable
+configure terminal
+interface fa0/0
+ ip address 192.168.2.1 255.255.255.0
+ no shutdown
+exit
+interface s0/0/1
+ ip address 10.0.0.6 255.255.255.252
+ no shutdown
+exit
+router ospf 1
+ network 192.168.2.0 0.0.0.255 area 0
+ network 10.0.0.4 0.0.0.3 area 0
+
+-----------------------------------------------------
+✅ Verification Commands:
+- show ip route
+- show ip ospf neighbor
+- ping between PCs in R1 LAN and R3 LAN
